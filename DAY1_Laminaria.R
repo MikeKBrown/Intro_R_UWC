@@ -90,7 +90,8 @@ lam %>%
     group_by(site) %>% 
   summarise(avrg_bl = mean(blade_length),
             minimum_bl = min(blade_length),
-            maximum_bl = max(blade_length))
+            maximum_bl = max(blade_length),
+            n = n())
   
 lam_exercise_3 <- lam %>%   
   group_by(site) %>% 
