@@ -1,6 +1,3 @@
-install.packages("devtools")
-devtools::install_github("hadley/tidyverse")
-
 # DAY1_Laminaria Dataset exploring and learning
 # Michael Brown
 # 29 Jan 2019 
@@ -86,7 +83,7 @@ lam %>%
   lam_exercise_1 <- lam %>% 
     mutate(total_length_half = (total_length/2)) %>% 
     na.omit %>% 
-   filter(total_length_half>100) %>% 
+   filter(total_length_half<100) %>% 
     select(site, total_length_half) 
 
   lam_exercise_2 <- lam %>% 
