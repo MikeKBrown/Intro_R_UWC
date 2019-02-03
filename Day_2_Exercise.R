@@ -101,3 +101,7 @@ lam_plot_3 <- ggplot(lam, aes(x = total_length, y = thallus_mass)) +
   labs(x = "Total Length", y = "Thallus Mass") +
   ggtitle("Effect of total length on Thallus Mass")
 lam_plot_3
+
+# Good plants
+# Lack of comments throughout the script
+# Always good practice to answer the hypothesis after creating a visualisation

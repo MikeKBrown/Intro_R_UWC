@@ -36,4 +36,5 @@ devtools::install_github("hadley/tidyverse")
   library(tidyr)
   
   
-
+# Script runs
+# Adding comments throughout the script may help for future reference

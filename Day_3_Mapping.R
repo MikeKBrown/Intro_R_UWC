@@ -134,3 +134,8 @@ sa_3 <- sa_2 +
   north(x.min = 22.5, x.max = 25.5, y.min = -33, y.max = -31, # Set location of symbol
         scale = 1.2, symbol = 16)
 sa_3
+
+# fixing packages, nicely done
+# Complete script
+# Adding comments shows that you understand each line and so its good practice to always add comments
+# 

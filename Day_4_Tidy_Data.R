@@ -32,3 +32,6 @@ SACTN4b_tidy <- SACTN4b %>%
 
 #joining
 SACTN4_tidy <- left_join(SACTN4a_tidy, SACTN4b_tidy) # this joins data next to each other, using the first three columns (site, src, date) as a reference
+
+# Good commenting
+# Script runs complete
