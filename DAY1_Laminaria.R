@@ -98,4 +98,8 @@ lam_exercise_3 <- lam %>%
   filter(stipe_mass == max(stipe_mass)) %>% 
   select(site, region, stipe_length)
 
+# Script runs complete
+# Great comments
+# Always good practice to add some comments along each of the lines
+# Nicely done
   

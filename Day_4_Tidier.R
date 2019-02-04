@@ -69,3 +69,7 @@ SACTN %>%
             min_temp = min(temp, na.rm = TRUE),
             max_temp = max(temp, na.rm = TRUE)
   )
+
+# Great commenting
+# Tried different things other than just copying what was taught in class
+# EXplored
