@@ -12,6 +12,7 @@ library(readr)
 egg_1 <- read_delim("data/YearlyEggBreadths.csv", 
                                 ";", escape_double = FALSE, trim_ws = TRUE)
 
+egg_1 <- YearlyEggBreadths
 egg_2 <- egg_1 %>% slice(1:12)
 
 

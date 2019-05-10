@@ -138,6 +138,8 @@ ggplot(meltedpears, aes(x = Var1, y = Var2, fill = value)) +
   scale_fill_distiller(palette = "Reds") +
   theme(axis.text.x=element_text(angle = 90, vjust = 0.625)) +
   labs(title = "Heatmap")
-  
+*  
  
-
+ # Answers and correctly interpr all the questions
+  # More comments would only improve your understanding and show the marker what you are doing at each of the lines of code
+# Nicely done
