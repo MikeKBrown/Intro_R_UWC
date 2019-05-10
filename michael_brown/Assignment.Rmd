@@ -1,0 +1,205 @@
+---
+title: "Efficacy of Agricultural insect sprays"
+subtitle: "Michael Brown 3650408"
+output:
+  word_document: default
+  pdf_document: default
+  fig_caption: yes
+  header-includes:
+   - \usepackage{setspace}
+   - \doublespacing
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(ggpubr)
+library(rmarkdown)
+library(tinytex)
+```
+
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
+
+#Introduction
+
+Insect damage can be very problematic in agriculture. It is one of the leading causes of crop loss annually and thus is responsible much of the loss of revenue for farmer seen in recent years as well as increasing pressures on food security (Oerke, 2006). To prevent this, farmers spend large amounts of money trying to protect their crops from insects (Oerke, 2006). 
+
+The commercial pesticide business is large and competitive in countries where agriculture is a significant contributor to GDP. The business is often important in job creation but it is also responsible for protecting the health of consumers and often the crop security of the farmers themselves. Not only do pesticide companies need to continue to develop the efficacy of their pesticides to stay competitive in the industry, they also need address harmful side effects that are oft reported after the use of commercial pesticides. In order to improve product development of pesticides in the long term and to provide better advice to farmers in the short term, it is important to evaluate the relative efficacy of commercially available insect sprays.  A study was conducted to test the efficacies thereof (Beall, 1977).
+
+Our hypothesis is that there is a difference in efficacy of the insect sprays commonly used. For the purposes of this experiment insect presence was used as the sole measure of  pesticide efficacy. A field of Maize (*Zea mays*) was used as the crop in this experiment as it is large contributor to agricultural income in South Africa where the experiment was conducted.
+
+There are some limitations to this study. Only the 6 most commonly used commercially available sprays were tested and so we are not able to state conclusively that that this study will determine the absolute best spray to use. However, it may form the springboard for more comprehensive studies and it certainly will provide useful guidance to farmers who are wishing to maximise their return on investment as well as providing useful information to pesticide companies.
+
+Note, for legal reasons, this study will not mention pesticides by commercial names, they will be kept anonymous and labeled A-F until all relevant parties have given their consent that they believe the study was unbiased and fair. 
+
+#Methods
+
+```{R include=FALSE}
+insect <- InsectSprays
+
+insect_a <- insect %>% 
+  filter(spray == "A")
+
+insect_b <- insect %>% 
+  filter(spray == "B")
+
+insect_c <- insect %>% 
+  filter(spray == "C")
+
+
+insect_d <- insect %>% 
+  filter(spray == "D")
+
+insect_e <- insect %>% 
+  filter(spray == "E")
+
+insect_f <- insect %>% 
+  filter(spray == "F")
+```
+
+6 quadrats of maize (*Zea mays*) of 50m x 50m were utilised as experimental plots. From the time of planting to the time of harvest each plot was treated with one of the six insect sprays as the only form of pesticide. Twenty four hours before harvest, twelve plants from each quadrat were randomly selected, extracted, bagged on site to ensure that no insects could escape. Plants were then examined for in the laboritory and he insect counts per plant were recorded.
+
+Statistical analysis was conducted using R for statistical analysis using the Tidyverse package (R Core Team, 2014; Wickham, 2017). Graphical representations were constructed using ggplot2 (Wickham, 2009) as well as ggpubr. Data normality was confirmed using a Shapiro-Wilks test.
+```{R echo=TRUE}
+insect %>% 
+  group_by(spray) %>% 
+  summarise(norm_dat = as.numeric(shapiro.test(count)[1]))
+```
+
+The results were also graphically represented using histograms. 
+
+```{R echo=TRUE, warning = FALSE}
+ggplot(data = insect_a, aes(x = count, fill = spray)) +
+  geom_density(aes(y = 1*..count.., fill = spray), colour = NA, alpha = 0.4) +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(x = "Insect Count", y = "")
+```
+
+Data was analysed using an analysis of variance (ANOVA) method.
+
+```{R}
+aov_insects <- aov(count~spray, data  = insect)
+summary(aov_insects) 
+```
+This tests for statistically significant differences. Boxplots were generated to better visualise the outcomes of the statistical analyses.
+
+```{R echo=TRUE, message=FALSE, warning=FALSE}
+ggplot(data = insect, aes(x = spray, y = count, fill = spray)) +
+  geom_boxplot(notch = TRUE) +
+ scale_fill_brewer(palette = "Blues") +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                                        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  ggtitle("Efficacy of insect sprays") +
+  labs(x = "", y = "Number of insects") 
+```
+
+The pairwise differences, although visible on the boxplot were then confirmed using a Tukey test.
+
+```{R warning = FALSE}
+TukeyHSD(aov_insects)  
+```
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+#Results
+```{R warning = FALSE, include=FALSE}
+ha <- ggplot(data = insect_a, aes(x = count, fill = spray)) +
+  geom_density(aes(y = 1*..count.., fill = spray), colour = NA, alpha = 0.4) +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(x = "Insect Count", y = "")
+
+hb <- ggplot(data = insect_b, aes(x = count, fill = spray)) +
+  geom_density(aes(y = 1*..count.., fill = spray), colour = NA, alpha = 0.4) +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(x = "Insect Count", y = "")
+
+hc <- ggplot(data = insect_c, aes(x = count, fill = spray)) +
+  geom_density(aes(y = 1*..count.., fill = spray), colour = NA, alpha = 0.4) +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(x = "Insect Count", y = "")
+
+hd <- ggplot(data = insect_d, aes(x = count, fill = spray)) +
+  geom_density(aes(y = 1*..count.., fill = spray), colour = NA, alpha = 0.4) +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(x = "Insect Count", y = "")
+
+he <- ggplot(data = insect_e, aes(x = count, fill = spray)) +
+  geom_density(aes(y = 1*..count.., fill = spray), colour = NA, alpha = 0.4) +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(x = "Insect Count", y = "")
+
+hf <- ggplot(data = insect_f, aes(x = count, fill = spray)) +
+  geom_density(aes(y = 1*..count.., fill = spray), colour = NA, alpha = 0.4) +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  labs(x = "Insect Count", y = "")
+```
+
+```{r warning = FALSE, echo=FALSE, fig.width=7,fig.height=6,fig.cap="\\label{fig:figs}Figure 1: Histograms showing normality"}
+ggarrange(ha, hb, hc, hd, he, hf, 
+          ncol = 2, nrow = 3,
+          labels = c("A", "B", "C", "D", "E", "F"))
+```
+
+```{r, warning = FALSE, message = FALSE, echo=FALSE, fig.width=7,fig.height=6,fig.cap="\\label{fig:figs}Figure 2: Boxplots showing counts of insects per spray type"}
+ggplot(data = insect, aes(x = spray, y = count, fill = spray)) +
+  geom_boxplot(notch = TRUE) +
+ scale_fill_brewer(palette = "Blues") +
+  theme_bw() +
+  theme(legend.position = "none",panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+                                        panel.background = element_blank(), axis.line = element_line(colour = "black")) +
+  ggtitle("Efficacy of insect sprays") +
+  labs(x = "", y = "Number of insects") 
+```  
+
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+#Discussion
+
+As Figure 1 shows above, the data was normally distributed, this was confirmed by a Shapiro-Wilks test. (all values lay between 0.75 and 0.96) therefore an ANOVA test was suitable for statistical analysis.
+
+The results of the ANOVA test clearly show that there is a significant difference in efficacy between the different  types of spray (DF: 5, F: 34.7, P: <2e-16). Sprays C, D and E are significantly less effective than sprays A, B and F. This can be graphically seen in Figure 2. Although Spray F seems to be the most effective of the sprays, the overlap of the notches shows that it is not a statistically significant (p < 0.000) difference and perhaps further assessment is necessary.
+
+The boxplot in Figure 2 not only shows the spread of the counts within sprays but the overlap, or non-overlap of notches between sprays, which are a good graphical proxy for statistical significance. These results were confirmed by a Tukey test which showed a significant statistical difference between sprays C and A (p = 0.000), D and A (p = 0.000), E and A (p = 0.000), C and B (p = 0.000), D and B (p = 0.000), E and B (p = 0.000), F and C (p = 0.000), F and D (p = 0.000) and F and E (p = 0.000). It also confirmed no statistical significance between A and B (p = 0.995), A and F (p = 0.754) and F and B (p = 0.960).
+
+##Conclusion
+
+In conclusion there is a definite difference in the efficacy of the pesticides commercially available for farmers. However, our statistical analysis did not present a clear winner. Perhaps a larger sample size would present a clearer result. Our conclusion is that any of sprays A, B and F are suitable for commercial farmers at this stage and further decisions should be based on pricing and potential side effects.
+
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+#References
+
+R Core Team. 2014. R: A language and environment for statistical computing. R Foundation for Statistical
+Computing, Vienna, Austria. URL http://www.R-project.org/
+
+Wickham H. 2009. ggplot2: elegant graphics for data analysis. Springer New York.
+
+Wickham H. 2017. Tidyverse: Easily Install and Load the 'Tidyverse'. R package version 1.2.1.
+  https://CRAN.R-project.org/package=tidyverse
+  
+Oerke EC. 2006. Crop losses to pests. *Journal of Agricultural Science* 144 pp. 31–43. Cambridge University Press doi:10.1017/S002185960500570
+
+Beall G. 1942. The Transformation of data from entomological field experiments. *Biometrika* 29 pp. 243–262
